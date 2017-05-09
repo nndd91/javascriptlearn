@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Songlist</title>
+
+    <script>
+      window.onload = init;
+      function init() {
+
+      var button = document.getElementById("submit");
+      button.onclick = handleButtonOnClick;
+      }
+
+      function handleButtonOnClick () {
+
+        console.log("Clicked!!");
+        var textinput = document.getElementById("songtextinput");
+        var songname = textinput.value;
+
+        var li = document.createElement("li");
+        li.innerHTML = songname;
+        console.log(li.value);
+
+        var ul = document.getElementById("songlist");
+        ul.appendChild(li);
+      }
+    </script>
+
+
+  </head>
+  <body>
+
+
+    <form>
+      <input id="songtextinput" size=40 placeholder="Input Song">
+      <button id="submit" type="button">Add Song</button>
+    </form>
+
+    <ul id="songlist">
+    
+    </ul>
+
+  </body>
+</html>
