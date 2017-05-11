@@ -12,20 +12,42 @@
 <body>
   <header>
   </header>
+  <div id="container">
+    <div id="gamearea">
+      <table id="field">
 
-  <div>
-    <table id="field">
 
-
-    </table>
-  </div>
-
-  <div class="win">
-    <div id="winbox">
-      <h1>Congrats You Win!</h1>
-      <br>
-      <a href="#" id="playagain">Play again</a>
+      </table>
     </div>
+
+    <div id="score">
+      <table>
+        <tr>
+          <th id="#heading">Scoreboard</th>
+        </tr>
+        <tr>
+          <td>Guesses so far: </td>
+          <td id="cur_guess"></td>
+        </tr>
+        <tr>
+          <td>Cells Left: </td>
+          <td id="hits"></td>
+        </tr>
+         <tr>
+          <td>Accuracy: </td>
+          <td id="accuracy"></td>
+        </tr>
+        </table>
+    </div>
+
+    <div class="win">
+      <div id="winbox">
+        <h1>Congratulations</h1>
+        <br>You hit all ships after <span id="guesses"></span> guesses!
+        <br><a href="#" id="playagain">Play again</a>
+      </div>
+    </div>
+
   </div>
 
   <footer>

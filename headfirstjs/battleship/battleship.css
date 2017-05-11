@@ -1,6 +1,11 @@
+body {
+  font-size: 15px;
+}
+
 .cell {
   display: block;
-  padding: 25px;
+  height: 100px;
+  width: 100px;
   background-color: lightblue;
 }
 
@@ -47,3 +52,26 @@
 .active {
   visibility: visible;
 }
+
+#score {
+  float: left;
+  font-size: 2em;
+  background-color: silver;
+  padding: 0 20px;
+}
+
+#heading {
+  column-span: 2;
+}
+
+#score td {
+  padding: 0 20px;
+}
+
+
+#container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
