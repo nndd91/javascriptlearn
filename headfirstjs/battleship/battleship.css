@@ -1,0 +1,49 @@
+.cell {
+  display: block;
+  padding: 25px;
+  background-color: lightblue;
+}
+
+.miss {
+  background-color: yellow;
+}
+
+.hit {
+  background-color: green;
+}
+
+.win {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  visibility: hidden;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: lightseagreen;
+}
+
+#winbox {
+  text-align: center;
+  font-size: 1.5em;
+  padding: 50px;
+  height: 300px;
+  width: 500px;
+  background-color: burlywood;
+}
+
+#winbox a {
+  font-size: 0.5em;
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  padding: 20px;
+  margin: 0 100px;
+  border: 1px solid black;
+}
+
+.active {
+  visibility: visible;
+}
