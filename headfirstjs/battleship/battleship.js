@@ -15,6 +15,7 @@ class Battleships {
     ];
     this.player_guess = 0;
     this.hit = 0;
+    this.shipcount;
     this.size = 5;
     console.log("Creating Board");
     let cell = "<td class=cell>Hi</td>";
@@ -125,15 +126,18 @@ class Battleships {
 
       //If any of the list of move is empty, just use the other list.
       if (possible_hor_moves.length == 0) {
+        console.log("No moves available for horizontal, ver_or_hor should be 1");
         ver_or_hor = 1;
+        console.log(ver_or_hor);
       } else if (possible_ver_moves.length == 0) {
+        console.log("No moves available for vertical, ver_or_hor should be 2");
         ver_or_hor = 2;
+        console.log(ver_or_hor);
       };
 
       if (ver_or_hor%2 == 0) {
         //Place Horizontally
-        
-        rand = ((Math.random()*(possible_hor_moves.length-1)).toFixed(0));
+        rand = (Math.floor(Math.random() * (possible_hor_moves.length-1)));
         let first_cell = possible_hor_moves[rand];
 
         console.log("Placing Horizontally at " + first_cell);
@@ -144,7 +148,7 @@ class Battleships {
         };
       } else {
         //Place Vertically
-        rand = ((Math.random()*(possible_hor_moves.length-1)).toFixed(0));
+        rand = (Math.floor(Math.random() * (possible_ver_moves.length-1)));
         let first_cell = possible_ver_moves[rand];
         console.log("Placing Vertically at " + first_cell);
         battlefield[first_cell] = symbol;
@@ -164,6 +168,20 @@ class Battleships {
     placeShip(submarine);
 
     console.log(battlefield);
+    this.countShips();
+  }
+
+  countShips() {
+    let shipcount = 0;
+    console.log("Starting shipcount");
+    console.log(this.battlefield);
+    for (var i = 0; i < this.battlefield.length; i++) {
+      if (this.battlefield[i] != "") {
+        shipcount += 1;
+      };
+    }
+    console.log("Shipcount is  " + shipcount);
+    this.shipcount = shipcount;
 
   }
 
@@ -223,6 +241,7 @@ $(document).ready(function() {
     $("#hits").html(battleship.hit);
     $("#cur_guess").html(battleship.player_guess);
     $("#accuracy").html(accuracy + "%");
+    $("#shipsleft").html(battleship.shipcount);
   };
 
   //onclick
@@ -231,6 +250,7 @@ $(document).ready(function() {
     if (battleship.clickHandler(id)) {
       battleship.player_guess += 1;
       battleship.hit += 1;
+      battleship.shipcount -= 1;
       console.log(battleship.player_guess);
       battleship.checkWin();
       $(this).addClass("hit");
