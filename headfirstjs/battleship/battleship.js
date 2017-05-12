@@ -8,7 +8,7 @@ class Battleships {
   create_board() {
     //Create array and some variables
     this.battlefield = ["", "", "", "", "",
-      "", "", "B", "", "",
+      "", "", "", "", "",
       "", "", "", "", "",
       "", "", "", "", "",
       "", "", "", "", ""
@@ -31,14 +31,29 @@ class Battleships {
       $("#field").append("<td><a href=\"#\" class=cell data-id=\"" + i + "\"></a></td>");
     };
   };
+  
+  resetBoard() {
+    this.battlefield = ["", "", "", "", "",
+      "", "", "", "", "",
+      "", "", "", "", "",
+      "", "", "", "", "",
+      "", "", "", "", ""
+    ];
+    this.player_guess = 0;
+    this.hit = 0;
+    this.deploy();
+  }
 
   deploy() {
-    let destroyer = [4, "D"];
-    let submarine = [1, "S"];
     let battleship = [5, "B"];
-    let corvette = [2, "C"];
+    let destroyer = [4, "D"];  
+    let corvette = [3, "C"];
+    let frigate = [2, "F"];
+    let submarine = [1, "S"];
 
     let ships = [battleship, destroyer, corvette, submarine];
+    let battlefield = this.battlefield;
+    let fieldsize = this.size;
 
     console.log("Placing Ships");
     console.log(ships.length);
@@ -46,58 +61,109 @@ class Battleships {
     console.log(ships.length);
     console.log(ships);
 
-
-
-    let rand = ((Math.random()*(this.battlefield.length-1)).toFixed(0));
-    console.log(rand);
-
-    //Search for horizontal placement
+    //Function to search for possible move then place a ship
     function placeShip(ship) {
       let symbol = ship[1];
-      let size = ship[0];
+      let shipsize = ship[0];
+      let cur_cell, all_empty;
+      let possible_hor_moves = [];
+      let possible_ver_moves = [];
+      let rand;
+      
+      console.log("Shipsize is " + shipsize);
+      console.log("Field size is " + fieldsize);
 
-      let possible_moves = [];
-
-      for (let i = 0; i <= this.size - size; i++) {
-        for (let j = 0; j < this.size; j++) {
-          cur_cell = (j*5)+i;
-          if (this.battlefield[cur_cell] == "") {
-            console.log("Empty!");
+      //Search for horizontal placement
+      for (let i = 0; i <= fieldsize - shipsize; i++) {
+        for (let j = 0; j < fieldsize; j++) {
+          cur_cell = (j*fieldsize)+i;
+          if (battlefield[cur_cell] == "") {
+            //console.log("Empty!");
             //if size 2, check next square
             all_empty = true;
-            for (let k = 0; k < size - 1; k++) {
-              if (this.battlefield[cur_cell + k] != "") {
+            for (let k = 0; k < shipsize - 1; k++) {
+              if (battlefield[cur_cell + k] != "") {
                 all_empty = false;
                 break;
-              }
+              };
             };
+            //If all empty, add to array of possiblemove
             if (all_empty == true) {
-              possible_moves.push(cur_cell);
-            }
-
-            // if (size > 1 && this.battlefield[cur_cell+1] == "") {
-            //   if (size > 2 && this.battlefield[cur_cell+2] == "") {
-            //     if (size > 3 && this.battlefield[cur_cell+3] == "") {
-            //       if (size > 4 && this.battlefield[cur_cell+5] == "") {
-                    
-
-            //       };
-            //     };
-            //   };
-            // };
+              possible_hor_moves.push(cur_cell);
+            };
           };
-          //end of first if
+        };
+      };
+
+      //Search for vertical placement
+      for (let i = 0; i <= fieldsize - shipsize; i++) {
+        for (let j = 0; j < fieldsize; j++) {
+          cur_cell = (j+(i*fieldsize));
+          if (battlefield[cur_cell] == "") {
+            //console.log("Empty!");
+            //if size 2, check next square
+            all_empty = true;
+            for (let k = 0; k < shipsize - 1; k++) {
+              if (battlefield[cur_cell + (k*fieldsize)] != "") {
+                all_empty = false;
+                break;
+              };
+            };
+            //If all empty, add to array of possiblemove
+            if (all_empty == true) {
+              possible_ver_moves.push(cur_cell);
+            };
+          };
         };
       };
       console.log("Possible Moves are");
-      console.log(possible_moves);
+      console.log(possible_hor_moves);
+      console.log(possible_ver_moves);
+      //Place Ship
+      let ver_or_hor = (Math.floor(Math.random() * 6) + 1  );
+      console.log("Ver or hor is " + ver_or_hor);
+
+      //If any of the list of move is empty, just use the other list.
+      if (possible_hor_moves.length == 0) {
+        ver_or_hor = 1;
+      } else if (possible_ver_moves.length == 0) {
+        ver_or_hor = 2;
+      };
+
+      if (ver_or_hor%2 == 0) {
+        //Place Horizontally
+        
+        rand = ((Math.random()*(possible_hor_moves.length-1)).toFixed(0));
+        let first_cell = possible_hor_moves[rand];
+
+        console.log("Placing Horizontally at " + first_cell);
+
+        battlefield[first_cell] = symbol;
+        for (let i = 0; i <= shipsize - 1; i++) {
+            battlefield[first_cell+i] = symbol;
+        };
+      } else {
+        //Place Vertically
+        rand = ((Math.random()*(possible_hor_moves.length-1)).toFixed(0));
+        let first_cell = possible_ver_moves[rand];
+        console.log("Placing Vertically at " + first_cell);
+        battlefield[first_cell] = symbol;
+        for (let i = 0; i <= shipsize - 1; i++) {
+            battlefield[first_cell+(i*fieldsize)] = symbol;
+        };
+      }
+
+      possible_hor_moves = [];
+      possible_ver_moves = [];
     }
-    //Search for vertical placement
+    //Place Ships
     placeShip(battleship);
+    placeShip(destroyer);
+    placeShip(corvette);
+    placeShip(frigate);
+    placeShip(submarine);
 
-    //while (ships.length > 0) {
-
-    //}
+    console.log(battlefield);
 
   }
 
@@ -177,9 +243,7 @@ $(document).ready(function() {
 
   $('#playagain').click(function() {
     //generate board function
-    battleship.battlefield = ["", "B", "B", "B", ""];
-    battleship.player_guess = 0;
-    battleship.hit = 0;
+    battleship.resetBoard();
     console.log(battleship.battlefield);
     //remove hit and miss class
     $(".cell").removeClass("hit miss");
