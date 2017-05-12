@@ -1,38 +1,39 @@
 //Battlefield Logic
 class Battleships {
-  
+
   constructor() {
 
     console.log("created battleship");
     this.battlefield = ["B", "B", "B", "B", "",
-                        "B", "", "", "", "B", 
-                        "B", "", "", "", "", 
-                        "B", "", "B", "B", "", 
-                        "B", "", "", "", ""];
+      "B", "", "", "", "B",
+      "B", "", "", "", "",
+      "B", "", "B", "B", "",
+      "B", "", "", "", ""
+    ];
 
     this.player_guess = 0;
     this.hit = 0;
   };
 
   create_board() {
-    var size = 5;
+    let size = 5;
     console.log("Creating Board");
-    var cell = "<td class=cell>Hi</td>";
+    let cell = "<td class=cell>Hi</td>";
 
     console.log(this.battlefield);
     $("#field").append("<tr>")
     for (var i = 0; i < this.battlefield.length; i++) {
-      if (i%(size) == 0 && i != 0) {
+      if (i % (size) == 0 && i != 0) {
         $("#field").append("</tr>",
-                            "<tr>")
-      }
+          "<tr>")
+      };
       $("#field").append("<td><a href=\"#\" class=cell data-id=\"" + i + "\"></a></td>");
     };
   };
 
   checkWin() {
-    var battlefield = this.battlefield;
-    var guesses = this.player_guess
+    let battlefield = this.battlefield;
+    let guesses = this.player_guess
     console.log(battlefield);
     console.log("checking win");
     for (var i = 0; i < battlefield.length; i++) {
@@ -48,14 +49,14 @@ class Battleships {
   };
 
   clickHandler(id) {
-    var battlefield = this.battlefield;
-    var checkWin = this.checkWin;
+    let battlefield = this.battlefield;
+    let checkWin = this.checkWin;
     //console.log(battlefield);
     //console.log(id);
     if (battlefield[id] != "") {
       battlefield[id] = "X";
       console.log("true");
-      return true   
+      return true
     } else {
       return false
     }
@@ -66,17 +67,17 @@ class Battleships {
 $(document).ready(function() {
 
   console.log("running main");
-  var battleship = new Battleships();
+  let battleship = new Battleships();
   console.log(battleship);
   battleship.create_board();
   updateScore();
-  
+
   function updateScore() {
-    var accuracy 
+    let accuracy
     if (battleship.player_guess == 0) {
       accuracy = 0;
     } else {
-      accuracy = ((battleship.hit/battleship.player_guess)*100).toFixed(2);
+      accuracy = ((battleship.hit / battleship.player_guess) * 100).toFixed(2);
     }
     console.log("Updateing Score");
     $("#hits").html(battleship.hit);
@@ -86,7 +87,7 @@ $(document).ready(function() {
 
   //onclick
   $('.cell').click(function() {
-    var id = $(this).data("id");
+    let id = $(this).data("id");
     if (battleship.clickHandler(id)) {
       battleship.player_guess += 1;
       battleship.hit += 1;
@@ -115,4 +116,3 @@ $(document).ready(function() {
 
   });
 });
-
