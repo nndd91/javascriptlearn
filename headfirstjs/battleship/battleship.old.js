@@ -26,7 +26,7 @@ var battleship = {
 
     console.log("checking win");
     for (var i = 0; i < battlefield.length; i++) {
-      if (battlefield[i] == "B") {
+      if (battlefield[i] != "X" || battlefield[i] != "") {
         return false;
       };
     };

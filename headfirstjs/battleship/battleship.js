@@ -2,28 +2,29 @@
 class Battleships {
 
   constructor() {
-
     console.log("created battleship");
-    this.battlefield = ["B", "B", "B", "B", "",
-      "B", "", "", "", "B",
-      "B", "", "", "", "",
-      "B", "", "B", "B", "",
-      "B", "", "", "", ""
-    ];
-
-    this.player_guess = 0;
-    this.hit = 0;
   };
 
   create_board() {
-    let size = 5;
+    //Create array and some variables
+    this.battlefield = ["", "", "", "", "",
+      "", "", "B", "", "",
+      "", "", "", "", "",
+      "", "", "", "", "",
+      "", "", "", "", ""
+    ];
+    this.player_guess = 0;
+    this.hit = 0;
+    this.size = 5;
     console.log("Creating Board");
     let cell = "<td class=cell>Hi</td>";
 
     console.log(this.battlefield);
+
+    //For each element in array, append a cell.
     $("#field").append("<tr>")
     for (var i = 0; i < this.battlefield.length; i++) {
-      if (i % (size) == 0 && i != 0) {
+      if (i % (this.size) == 0 && i != 0) {
         $("#field").append("</tr>",
           "<tr>")
       };
@@ -31,19 +32,91 @@ class Battleships {
     };
   };
 
+  deploy() {
+    let destroyer = [4, "D"];
+    let submarine = [1, "S"];
+    let battleship = [5, "B"];
+    let corvette = [2, "C"];
+
+    let ships = [battleship, destroyer, corvette, submarine];
+
+    console.log("Placing Ships");
+    console.log(ships.length);
+    ships.splice(0, 1);
+    console.log(ships.length);
+    console.log(ships);
+
+
+
+    let rand = ((Math.random()*(this.battlefield.length-1)).toFixed(0));
+    console.log(rand);
+
+    //Search for horizontal placement
+    function placeShip(ship) {
+      let symbol = ship[1];
+      let size = ship[0];
+
+      let possible_moves = [];
+
+      for (let i = 0; i <= this.size - size; i++) {
+        for (let j = 0; j < this.size; j++) {
+          cur_cell = (j*5)+i;
+          if (this.battlefield[cur_cell] == "") {
+            console.log("Empty!");
+            //if size 2, check next square
+            all_empty = true;
+            for (let k = 0; k < size - 1; k++) {
+              if (this.battlefield[cur_cell + k] != "") {
+                all_empty = false;
+                break;
+              }
+            };
+            if (all_empty == true) {
+              possible_moves.push(cur_cell);
+            }
+
+            // if (size > 1 && this.battlefield[cur_cell+1] == "") {
+            //   if (size > 2 && this.battlefield[cur_cell+2] == "") {
+            //     if (size > 3 && this.battlefield[cur_cell+3] == "") {
+            //       if (size > 4 && this.battlefield[cur_cell+5] == "") {
+                    
+
+            //       };
+            //     };
+            //   };
+            // };
+          };
+          //end of first if
+        };
+      };
+      console.log("Possible Moves are");
+      console.log(possible_moves);
+    }
+    //Search for vertical placement
+    placeShip(battleship);
+
+    //while (ships.length > 0) {
+
+    //}
+
+  }
+
   checkWin() {
     let battlefield = this.battlefield;
-    let guesses = this.player_guess
+    let guesses = this.player_guess;
+    let accuracy = ((this.hit/guesses)*100).toFixed(2);
+    console.log("Final accuracy is " + accuracy);
     console.log(battlefield);
     console.log("checking win");
     for (var i = 0; i < battlefield.length; i++) {
-      if (battlefield[i] == "B") {
+      if (battlefield[i] != "X" && battlefield[i] != "") {
         return false;
       };
     };
 
     $(".win").addClass("active");
     $("#guesses").html(guesses)
+    $("#accuracyfinal").html(accuracy)
     console.log("Win!");
     return true;
   };
@@ -70,6 +143,7 @@ $(document).ready(function() {
   let battleship = new Battleships();
   console.log(battleship);
   battleship.create_board();
+  battleship.deploy();
   updateScore();
 
   function updateScore() {
